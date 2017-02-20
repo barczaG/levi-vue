@@ -4,6 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
+import auth from './auth'
+
+// I think this is deprecated
+//Vue.http.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
+//console.log(localStorage.getItem('token'))
+
+auth.checkAuth()
 
 Vue.use(VueResource)
 

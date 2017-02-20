@@ -1,16 +1,17 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <!--<router-view></router-view>-->
-    <login></login>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import login from 'components/login'
+import Login from 'components/Login'
+import Register from 'components/Register'
+import Redirect from 'components/Redirect'
 export default {
   name: 'app',
-  components: {login}
+  components: {Login, Register, Redirect}
 }
 </script>
 
