@@ -36,7 +36,7 @@ import auth from '../auth'
           password: this.credentials.password
         }
         // will need to rewrite this after I rename loginTry to 'login'
-         auth.loginTry(this, credentials, 'Redirect')
+         auth.loginTry(this, credentials, 'menu')
 
          this.credentials.email = ''
          this.credentials.password = ''
