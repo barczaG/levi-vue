@@ -1,26 +1,47 @@
 
   <template>
     <div>
-      <form>
-        <h1>Regisztráció</h1>
-        Email: <input v-model="email" id="email"><br>
-        Jelszó: <input type="password" v-model="password" id="password"><br>
-        <button class="btn btn-primary" v-on:click="login()">Küldés</button>
-      </form>
+      <div class="alert alert-danger" v-if="error">
+        <p>{{ error }}</p>
+      </div>
+      <div class="form-group">
+        <h3>Felhasználó hozzáadása<h3><br>
+        Email: <input class="form-control" v-model="credentials.email" id="email"><br>
+        Jelszó: <input type="password" class="form-control" v-model="credentials.password" id="password"><br>
+        <button class="btn btn-primary" v-on:click="register()">Küldés</button>
+      </div>
     </div>
   </template>
 
   <script>
+  import auth from '../auth'
     export default {
-      name: 'login',
-      methods: {
-        login() {
-          this.$http.post('http://localhost:3000/api/register', { email: this.email, password:this.password })
-            .then((token) => console.log(token))
-            .catch((err) => console.error(err))
-            //console.log(this.email, this.password)
-        }
+      name: 'Register',
 
+      data () {
+        return {
+          credentials: {
+            email: '',
+            password: ''
+          },
+          error: ''
+        }
+      },
+
+      methods: {
+        register() {
+          let credentials = {
+            email: this.credentials.email,
+            password: this.credentials.password
+          }
+           // await?
+           auth.register(this, credentials)
+
+           this.credentials.email = ''
+           this.credentials.password = ''
+
+        }
+        }
       }
-    }
+
   </script>
