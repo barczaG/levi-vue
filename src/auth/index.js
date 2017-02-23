@@ -90,13 +90,18 @@ export default {
 
   async register(context, creds) {
     try{
-      let data = await context.$http.post(REGISTER_URL, creds)
-      console.log(data)
-      console.log('This is running')
-      if (data.status === 200) {
-        console.log('User succesfully added')
+      if (!this.user.authenticated) {
+        console.error('User is not authenticated')
+        return
       } else {
-        console.log('An error has occured')
+        let data = await context.$http.post(REGISTER_URL, creds)
+        console.log(data)
+        console.log('This is running')
+        if (data.status === 200) {
+          console.log('User succesfully added')
+        } else {
+          console.log('An error has occured')
+        }
       }
     } catch (err) {
       console.error(err)

@@ -10,7 +10,9 @@
         <button class="btn btn-primary" v-on:click="submit()"></button>
     </div>-->
 
-    <register></register>
+    <register></register><br>
+    <button class="btn btn-danger" v-on:click='logout()'>Logout</button>
+
   </div>
 </template>
 
@@ -25,6 +27,12 @@ import Register from './Register.vue'
     data () {
       return {
         error: ''
+      }
+    },
+    methods: {
+      logout() {
+        // will have to rewrite this after I rename asyncLogout to "logout"
+        auth.asyncLogout(this)
       }
     }
     }
