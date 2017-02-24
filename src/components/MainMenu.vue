@@ -32,7 +32,7 @@ import Register from './Register.vue'
     methods: {
       logout() {
         // will have to rewrite this after I rename asyncLogout to "logout"
-        auth.asyncLogout(this)
+        this.$router.push('logout')
       }
     }
     }

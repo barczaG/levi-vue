@@ -1,7 +1,7 @@
 // I need to fix this fucking mess of an import
 
-import VueRouter from './route'
-//import VueRouter from '../router/'
+// import VueRouter from './route'
+// import VueRouter from '../router/'
 
 const API_URL = 'http://localhost:3000/'
 const LOGIN_URL = API_URL + 'api/login'
@@ -38,40 +38,21 @@ export default {
   // when called, "context" will be "this", creds will be the email and the password,
   // and if there's a redirect passed, user will be redirected there
   async loginTry (context, creds, redirect) {
-    try {
-      // sends login data to server
-      let data = await context.$http.post(LOGIN_URL, creds)
-      console.log(data)
-      // saves received token as "id_token"
-      localStorage.setItem('id_token', data.body)
-      console.log(localStorage.getItem('id_token'))
-      this.user.authenticated = true
-      console.log(this.user)
-      // Only partially working authentication, works if user doesn't enter anything,
-      // but has a signed token
-      if (data.status === 200) {
-        console.log('Succesfully logged in.')
-      } else {
-        console.log('An error has occured')
-      }
-      if (redirect && this.user.authenticated) {
-        // redirects user to specified part of the site
-        context.$router.push(redirect) // do I need await here?
-      }
-    } catch (err) {
-      console.error(err)
+    const response = await context.$http.post(LOGIN_URL, creds)
+    if (!response.ok) {
+      console.log(`Login failed ${e.status} ${e.body}`)
+      throw new Error(`Login failed ${e.status} ${e.body}`)
     }
+
+    const token = response.body
+    console.log('token', token)
+    localStorage.setItem('id_token', token)
+    
+    return token
   },
 
   logout(context) {
-    // these statements don't print anything
-    console.log(this.user)
-    console.log(localStorage.getItem('id_token'))
     localStorage.removeItem('id_token')
-    this.user.authenticated = false
-    // this won't print anything either
-    console.log(this.user)
-    context.$router.push('/')
   },
 
   async asyncLogout(context) {
@@ -110,25 +91,22 @@ export default {
 
   checkAuth () {
     let jwt = localStorage.getItem('id_token')
-    if (jwt) {
-      this.user.authenticated = true
-    } else {
-      this.user.authenticated = false
-    }
+    if (jwt) return true 
+    return false
   },
 
-  async asyncCheckAuth () {
-    try {
-      let jwt = await localStorage.getItem('id_token')
-      if (jwt) {
-        this.user.authenticated = true
-      } else {
-        this.user.authenticated = false
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  },
+  // checkAuth () {
+  //   try {
+  //     let jwt = await localStorage.getItem('id_token')
+  //     if (jwt) {
+  //       this.user.authenticated = true
+  //     } else {
+  //       this.user.authenticated = false
+  //     }
+  //   } catch (err) {
+  //     console.error(err)
+  //   }
+  // },
 
   getAuthHeader () {
     return {

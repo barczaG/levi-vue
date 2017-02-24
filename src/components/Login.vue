@@ -30,17 +30,18 @@ import auth from '../auth'
 
     methods: {
 
-      submit() {
+      async submit() {
         let credentials = {
           email: this.credentials.email,
           password: this.credentials.password
         }
         // will need to rewrite this after I rename loginTry to 'login'
-         auth.loginTry(this, credentials, 'menu')
-
-         this.credentials.email = ''
-         this.credentials.password = ''
-
+        try {
+          await auth.loginTry(this, credentials)
+          this.$router.push('menu') // do I need await here?
+        } catch (e) {
+          // handle this shiiit
+        }
       }
 
     }
